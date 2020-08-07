@@ -3,7 +3,6 @@
 #include <udp.h>
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
-#include <adri_wifi.h>
 #include <adri_tools.h>
 
 void adri_udp_parse(String s){
