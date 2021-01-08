@@ -17,7 +17,7 @@ void setup()
 
 	Serial.println("");
 
-	wfifi_getID_toSPIFF("freebox_123_EXT", "phcaadax", "", ADWIFI_STATION);
+	wfifi_getID_toSPIFF("xxx", "xxx", "", ADWIFI_STATION);
 	wifi_setup(DEVICENAME);
 	#ifdef DEBUG
 		String s;
