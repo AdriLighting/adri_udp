@@ -113,7 +113,7 @@ void adri_udp::send(String transmit_buffer) {
 void adri_udp::send_toIp(String transmit_buffer, const char * ip, uint16_t port) {
 	int size = transmit_buffer.length();
 	if (size==0)return;
-	int start, end;
+	// int start, end;
 	char buf[size+1];	
 	sprintf(buf,"%s",transmit_buffer.c_str());
 	_server.beginPacket(ip, port);
@@ -220,7 +220,7 @@ void adri_udpMulti::loop() {
 	int udpServer_client_cnt = 0;
 	int udpServer_client_pos = 0;
 	udpServer * udpServerArray[MAXCLIENT];
-	int udpServerCompar_max = 60000;
+	unsigned long udpServerCompar_max = 60000;
 
 	udpServer::udpServer(IPAddress ip, uint16_t port){
 		_ip 			= ip;
@@ -266,7 +266,7 @@ void adri_udpMulti::loop() {
 				_waiting = millis();
 				String core;
 				core 	= 	"{";
-				core 	+= 	jsonAddStringValue (true, 	"op", "server_request");	
+				core 	+= 	jsonAddStringsValue (true, 	"op", "server_request");	
 				core 	+= 	"}";
 				// udp_send(core);
 			}
