@@ -1,31 +1,17 @@
 #include <adri_udp.h>
-#include <adri_tools.h>
-#include <adri_wifi.h>
 
-#define DEVICENAME String("REVEILL")
 
 adri_udp * udpServer;
-
 adri_udpMulti * udpMultiServer;
+
 
 
 void setup()
 {
     Serial.begin(115200);
 
-	SPIFFS.begin();	
-
 	Serial.println("");
 
-	wfifi_getID_toSPIFF("xxx", "xxx", "", ADWIFI_STATION);
-	wifi_setup(DEVICENAME);
-	#ifdef DEBUG
-		String s;
-		s = "\nwifi_print_networkInfo\n";
-		wifi_print_networkInfo(&s);  
-		s+= network_info(DEVICENAME);
-		Serial.printf("%s\n", s.c_str());
-	#endif
 		
 	udpServer 		= new adri_udp();
 	udpServer->start();
