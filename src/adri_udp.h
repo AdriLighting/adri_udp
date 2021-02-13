@@ -2,14 +2,13 @@
       	#define ADRI_UDP_H
 		#include <WiFiUdp.h>
 		#include <arduino.h>
-		#include <adri_timer.h>
+		// #include <adri_timer.h>
 
 		typedef void (*parse_f)(String s);  
 
 		class adri_udp
 		{
 			// adri_timer 	* _timerSendPacket;
-			adri_timer 	* _timerRecPacket;
 			uint16_t 	_port 			= 9100;
 			WiFiUDP 	_server;
 			String 		_receive_buffer;

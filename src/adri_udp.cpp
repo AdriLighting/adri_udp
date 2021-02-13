@@ -3,11 +3,21 @@
 #include <udp.h>
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
-#include <adri_tools.h>
-#include <adri_wifiConnect.h>
 
 // #define DEBUG_UDP
-
+namespace  {
+	String ip2string(IPAddress a) {
+		char buf[18];
+		sprintf(buf,"%d.%d.%d.%d",a[0],a[1],a[2],a[3]);
+		return String(buf);
+	}
+	String jsonAddStringsValue (boolean start, String label, String value) {
+	    String ret;
+	    if (start)  ret = "\""+label+"\":\"" +  value + "\"";
+	    else        ret = ", \""+label+"\":\"" +  value + "\"";
+	    return ret;
+	}	
+} // 
 void adri_udp_parse(String s){
 	// Serial.printf("\n[adri_udp_parse]\n%s\n", s.c_str());
 }
@@ -66,7 +76,7 @@ bool adri_udp::receive() {
 	adri_udp_packetBuffer[length]=0;
 
 	#ifdef DEBUG_UDP
-		fsprintf("\n[adri_udp::receive][size: %d]\n%s\n", packet_size, adri_udp_packetBuffer);
+		Serial.printf("\n[adri_udp::receive][size: %d]\n%s\n", packet_size, adri_udp_packetBuffer);
 	#endif
 
    return true;
@@ -113,7 +123,7 @@ void adri_udp::send(String transmit_buffer) {
 void adri_udp::send_toIp(String transmit_buffer, const char * ip, uint16_t port) {
 	int size = transmit_buffer.length();
 	if (size==0)return;
-	int start, end;
+	// int start, end;
 	char buf[size+1];	
 	sprintf(buf,"%s",transmit_buffer.c_str());
 	_server.beginPacket(ip, port);
@@ -220,7 +230,7 @@ void adri_udpMulti::loop() {
 	int udpServer_client_cnt = 0;
 	int udpServer_client_pos = 0;
 	udpServer * udpServerArray[MAXCLIENT];
-	int udpServerCompar_max = 60000;
+	unsigned long udpServerCompar_max = 60000;
 
 	udpServer::udpServer(IPAddress ip, uint16_t port){
 		_ip 			= ip;
@@ -264,10 +274,10 @@ void adri_udpMulti::loop() {
 			if ((!_check) && ((millis()-_lastCall) > 5000)) {
 				_check = true;
 				_waiting = millis();
-				String core;
-				core 	= 	"{";
-				core 	+= 	jsonAddStringValue (true, 	"op", "server_request");	
-				core 	+= 	"}";
+				// String core;
+				// core 	= 	"{";
+				// core 	+= 	jsonAddStringsValue (true, 	"op", "server_request");	
+				// core 	+= 	"}";
 				// udp_send(core);
 			}
 			if (_check) {
@@ -316,7 +326,7 @@ void adri_udpMulti::loop() {
 		if (udpServer_client_cnt < MAXCLIENT) {
 
 			String ip_str = ip2string(ip);
-			fsprintf("\n[udpServer_addClient] adding client nbr:%d ip:%s, port:%d\n", udpServer_client_cnt, ip_str.c_str(), port);
+			Serial.printf("\n[udpServer_addClient] adding client nbr:%d ip:%s, port:%d\n", udpServer_client_cnt, ip_str.c_str(), port);
 
 			udpServer_client_pos = udpServer_client_cnt;
 
